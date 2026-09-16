@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>श्री गणरायाच्या आरतीचे मानकरी | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="मंडळाच्या गणेशोत्सवातील दररोजच्या आरतीच्या मानकरी कुटुंबांची संपूर्ण यादी.">
+<link rel="canonical" href="https://example.com/mankari.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="श्री गणरायाच्या आरतीचे मानकरी | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="मंडळाच्या गणेशोत्सवातील दररोजच्या आरतीच्या मानकरी कुटुंबांची संपूर्ण यादी.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / आरतीचे मानकरी</nav>
+    <h1>श्री गणरायाच्या आरतीचे मानकरी</h1>
+    <p>दररोजच्या आरतीचा मान मिळालेल्या कुटुंबांची नोंद.</p>
+  </div>
+</section>
+
+<section class="section section--tint" id="todaySec" hidden><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-hands-praying"></i></div><h2>आजचे आरतीचे मानकरी</h2><p>आजच्या सायंकाळच्या आरतीचा मान.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="grid" id="todayBox"></div></div></section>
+
+<section class="section section--white"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-list"></i></div><h2>सर्व मानकरी</h2><p>वर्ष आणि तारखेनुसार संपूर्ण यादी.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" type="search" placeholder="नाव किंवा कुटुंब शोधा…" aria-label="मानकरी शोधा"></div>
+<div class="filters" id="filters"></div>
+<div class="grid g-4" id="box"></div></div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,0)+'")';
+
+var all=DB.list('aarti_mankari').sort(function(a,b){return a.date<b.date?1:-1;});
+var T0=DB.today(), YR=new Date().getFullYear(), mode='all', q='';
+
+var tm=all.filter(function(m){return m.date===T0;});
+if(tm.length){
+ document.getElementById('todaySec').hidden=false;
+ document.getElementById('todayBox').innerHTML=tm.map(function(m){
+  return '<article class="mankari mankari--today">'+
+  '<img class="mankari__pic" src="'+esc(m.photo)+'" alt="'+esc(m.family)+'" loading="lazy">'+
+  '<div><span class="tag" style="background:rgba(255,255,255,.22);color:#fff">आजचा मान</span>'+
+  '<h4 style="margin-top:10px">'+esc(m.name)+'</h4><div class="fam">'+esc(m.family)+'</div>'+
+  '<div class="meta"><span>'+DB.fmtDate(m.date)+' • '+DB.dayName(m.date)+'</span><span>'+esc(m.festival)+' '+esc(m.year)+'</span></div></div></article>';
+ }).join('');
+}
+
+var tabs=[['today','आजचे मानकरी'],['year','यावर्षीचे मानकरी'],['past','मागील वर्षांचे मानकरी'],['all','सर्व मानकरी']];
+document.getElementById('filters').innerHTML=tabs.map(function(t){
+ return '<button class="chip'+(t[0]===mode?' on':'')+'" data-m="'+t[0]+'">'+t[1]+'</button>';}).join('');
+
+function filtered(){
+ return all.filter(function(m){
+  var ok = mode==='all' || (mode==='today'&&m.date===T0) || (mode==='year'&&m.year===YR) || (mode==='past'&&m.year<YR);
+  if(!ok) return false;
+  if(!q) return true;
+  return (m.name+' '+m.family+' '+m.festival).toLowerCase().indexOf(q)>-1;
+ });
+}
+function render(){
+ var list=filtered(), b=document.getElementById('box');
+ b.innerHTML = list.length ? list.map(function(m,i){
+  return '<article class="mankari rv" data-delay="'+(i*50)+'">'+
+  '<img class="mankari__pic" src="'+esc(m.photo)+'" alt="'+esc(m.family)+'" loading="lazy">'+
+  '<h4>'+esc(m.name)+'</h4><div class="fam">'+esc(m.family)+'</div>'+
+  '<div class="meta"><span>'+DB.fmtDate(m.date)+'</span><span>'+DB.dayName(m.date)+'</span>'+
+  '<span>'+esc(m.festival)+' • '+esc(m.year)+'</span></div></article>';
+ }).join('') : T.empty('या निकषात मानकरी सापडले नाहीत','दुसरा गट निवडा किंवा शोध बदलून पाहा.','fa-user-slash');
+ refreshUI();
+}
+document.getElementById('filters').addEventListener('click',function(e){
+ var c=e.target.closest('.chip'); if(!c)return;
+ mode=c.dataset.m;
+ [].forEach.call(this.querySelectorAll('.chip'),function(x){x.classList.toggle('on',x===c);});
+ render();
+});
+document.getElementById('q').addEventListener('input',function(e){q=e.target.value.trim().toLowerCase();render();});
+render();
+
+</script>
+</body>
+</html>

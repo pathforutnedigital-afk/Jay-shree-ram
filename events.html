@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>आगामी कार्यक्रम | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="मंडळात होणाऱ्या आगामी कार्यक्रमांची तारीख, वेळ आणि ठिकाणासह माहिती.">
+<link rel="canonical" href="https://example.com/events.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="आगामी कार्यक्रम | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="मंडळात होणाऱ्या आगामी कार्यक्रमांची तारीख, वेळ आणि ठिकाणासह माहिती.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / आगामी कार्यक्रम</nav>
+    <h1>आगामी कार्यक्रम</h1>
+    <p>मंडळात होणाऱ्या पुढील कार्यक्रमांची माहिती.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-calendar-days"></i></div><h2>कार्यक्रम पत्रिका</h2><p>तारीख, वेळ आणि ठिकाणासह.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="grid" style="gap:20px" id="box"></div></div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,0)+'")';
+
+var all=DB.list('events').sort(function(a,b){return a.date<b.date?-1:1;});
+document.getElementById('box').innerHTML = all.length ? all.map(function(e,i){
+ return '<article class="event rv" data-delay="'+(i*70)+'">'+
+ '<div class="event__img"><img src="'+esc(e.image)+'" alt="'+esc(e.title)+'" loading="lazy"></div>'+
+ '<div class="event__body"><span class="tag">'+DB.fmtDate(e.date)+' • '+DB.dayName(e.date)+'</span>'+
+ '<h3 style="margin:10px 0 0">'+esc(e.title)+'</h3>'+
+ '<div class="event__meta"><span><i class="fa-solid fa-clock"></i> '+esc(e.time)+'</span>'+
+ '<span><i class="fa-solid fa-location-dot"></i> '+esc(e.venue)+'</span></div>'+
+ '<p>'+esc(e.desc)+'</p>'+
+ '<a class="btn btn-outline btn-sm" href="contact.html">अधिक माहिती</a></div></article>';
+}).join('') : T.empty('सध्या कोणताही कार्यक्रम जाहीर नाही','पुढील कार्यक्रम जाहीर होताच येथे दिसेल.','fa-calendar-xmark');
+refreshUI();
+
+</script>
+</body>
+</html>

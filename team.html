@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>आमची टीम | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="जय श्री राम मित्र मंडळाचे अध्यक्ष, सचिव, खजिनदार आणि कार्यकर्त्यांची ओळख.">
+<link rel="canonical" href="https://example.com/team.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="आमची टीम | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="जय श्री राम मित्र मंडळाचे अध्यक्ष, सचिव, खजिनदार आणि कार्यकर्त्यांची ओळख.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / आमची टीम</nav>
+    <h1>आमची टीम</h1>
+    <p>मंडळाचे कार्यकारी मंडळ आणि कार्यकर्ते.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-people-group"></i></div><h2>कार्यकारी मंडळ</h2><p>उत्सव आणि उपक्रमांमागील माणसे.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="filters" id="filters"></div>
+<div class="grid g-4" id="box"></div></div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,1)+'")';
+
+var all=DB.list('team_members'), cur='सर्व';
+var roles=['सर्व','अध्यक्ष','उपाध्यक्ष','सचिव','खजिनदार','कार्याध्यक्ष','सदस्य','कार्यकर्ते'];
+document.getElementById('filters').innerHTML=roles.map(function(r){
+ return '<button class="chip'+(r===cur?' on':'')+'" data-r="'+r+'">'+r+'</button>';}).join('');
+function render(){
+ var l = cur==='सर्व'?all:all.filter(function(m){return m.role===cur;});
+ var b=document.getElementById('box');
+ b.innerHTML = l.length ? l.map(function(m,i){
+  var soc='';
+  if(m.fb) soc+='<a href="'+esc(m.fb)+'" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>';
+  if(m.ig) soc+='<a href="'+esc(m.ig)+'" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>';
+  return '<article class="member rv" data-delay="'+(i*60)+'">'+
+  '<div class="member__pic"><img src="'+esc(m.photo)+'" alt="'+esc(m.name)+'" loading="lazy"></div>'+
+  '<div class="member__body"><h4>'+esc(m.name)+'</h4><div class="member__role">'+esc(m.role)+'</div>'+
+  '<p class="member__bio">'+esc(m.bio)+'</p>'+(soc?'<div class="socials">'+soc+'</div>':'')+'</div></article>';
+ }).join('') : T.empty('या पदावर सदस्य नोंदवलेले नाहीत','दुसरे पद निवडा.','fa-user-slash');
+ refreshUI();
+}
+document.getElementById('filters').addEventListener('click',function(e){
+ var c=e.target.closest('.chip'); if(!c)return;
+ cur=c.dataset.r;
+ [].forEach.call(this.querySelectorAll('.chip'),function(x){x.classList.toggle('on',x===c);});
+ render();
+});
+render();
+
+</script>
+</body>
+</html>

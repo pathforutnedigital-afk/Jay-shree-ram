@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>व्हिडिओ गॅलरी | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="मंडळाच्या उत्सव आणि उपक्रमांचे YouTube व्हिडिओ एका ठिकाणी.">
+<link rel="canonical" href="https://example.com/videos.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="व्हिडिओ गॅलरी | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="मंडळाच्या उत्सव आणि उपक्रमांचे YouTube व्हिडिओ एका ठिकाणी.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / व्हिडिओ गॅलरी</nav>
+    <h1>आमचे अविस्मरणीय क्षण</h1>
+    <p>मिरवणुका, आरती, गरबा आणि स्पर्धांचे व्हिडिओ.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="filters" id="filters"></div>
+<div class="grid g-3" id="box"></div>
+</div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,3)+'")';
+
+var all=DB.list('videos'), cur='सर्व';
+var cats=['सर्व','गणेशोत्सव','नवरात्र','दहीहंडी','स्पर्धा','सामाजिक उपक्रम'];
+document.getElementById('filters').innerHTML=cats.map(function(a){
+ return '<button class="chip'+(a===cur?' on':'')+'" data-a="'+a+'">'+a+'</button>';}).join('');
+function render(){
+ var l = cur==='सर्व'?all:all.filter(function(v){return v.cat===cur;});
+ var b=document.getElementById('box');
+ b.innerHTML = l.length ? l.map(function(v,i){
+  return '<article class="card vcard rv" data-delay="'+(i*60)+'">'+
+  '<div class="thumb" data-yt="'+esc(v.yt)+'">'+
+  '<img src="https://img.youtube.com/vi/'+esc(v.yt)+'/hqdefault.jpg" alt="'+esc(v.title)+'" loading="lazy">'+
+  '<span class="play"><i class="fa-solid fa-play"></i></span></div>'+
+  '<div class="card__body"><span class="tag">'+esc(v.cat)+'</span>'+
+  '<h3 style="font-size:1.1rem;margin-top:8px">'+esc(v.title)+'</h3><p>'+esc(v.desc)+'</p></div></article>';
+ }).join('') : T.empty('या गटात व्हिडिओ नाहीत','दुसरा गट निवडा किंवा प्रशासक पॅनेलमधून व्हिडिओ जोडा.','fa-video-slash');
+ refreshUI();
+}
+document.getElementById('filters').addEventListener('click',function(e){
+ var c=e.target.closest('.chip'); if(!c)return;
+ cur=c.dataset.a;
+ [].forEach.call(this.querySelectorAll('.chip'),function(x){x.classList.toggle('on',x===c);});
+ render();
+});
+document.getElementById('box').addEventListener('click',function(e){
+ var t=e.target.closest('.thumb'); if(!t||!t.dataset.yt)return;
+ t.innerHTML='<iframe src="https://www.youtube.com/embed/'+t.dataset.yt+'?autoplay=1" title="व्हिडिओ" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+ t.dataset.yt='';
+});
+render();
+
+</script>
+</body>
+</html>

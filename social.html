@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>सामाजिक उपक्रम | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="रक्तदान शिबिर, वृक्षारोपण, स्वच्छता अभियान आणि मंडळाच्या इतर सामाजिक उपक्रमांची माहिती.">
+<link rel="canonical" href="https://example.com/social.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="सामाजिक उपक्रम | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="रक्तदान शिबिर, वृक्षारोपण, स्वच्छता अभियान आणि मंडळाच्या इतर सामाजिक उपक्रमांची माहिती.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / सामाजिक उपक्रम</nav>
+    <h1>उत्सवांसोबत समाजसेवेचीही बांधिलकी</h1>
+    <p>मंडळामार्फत वर्षभर राबवले जाणारे सामाजिक उपक्रम.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-hands-holding-heart"></i></div><h2>आमचे उपक्रम</h2><p>समाजासाठी मंडळाचे नियमित काम.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="grid g-3" id="box"></div></div></section>
+
+<section class="section" style="background:var(--grad-deep);color:#fff;text-align:center"><div class="wrap">
+<h2 style="color:#fff">तुम्हीही सहभागी होऊ शकता</h2>
+<p style="max-width:620px;margin:0 auto 26px;color:rgba(255,255,255,.9)">स्वयंसेवक म्हणून किंवा देणगीदार म्हणून मंडळाच्या उपक्रमांत सहभागी होण्यासाठी संपर्क साधा.</p>
+<a class="btn btn-ghost" href="contact.html"><i class="fa-solid fa-phone"></i> संपर्क साधा</a></div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,4)+'")';
+
+var all=DB.list('social_initiatives');
+document.getElementById('box').innerHTML = all.length ? all.map(function(s,i){
+ return '<article class="card rv" data-delay="'+(i*60)+'">'+
+ '<div class="card__media"><img src="'+esc(s.image)+'" alt="'+esc(s.title)+'" loading="lazy"></div>'+
+ '<div class="card__body"><h3><i class="fa-solid '+esc(s.icon)+'" style="color:var(--orange);margin-right:8px"></i>'+esc(s.title)+'</h3>'+
+ '<p>'+esc(s.desc)+'</p></div></article>';
+}).join('') : T.empty('अद्याप उपक्रम नोंदवलेले नाहीत','प्रशासक पॅनेलमधून उपक्रम जोडता येतील.','fa-seedling');
+refreshUI();
+
+</script>
+</body>
+</html>

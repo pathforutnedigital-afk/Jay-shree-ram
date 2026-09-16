@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>खेळ व स्पर्धा | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="क्रिकेट, कबड्डी, रांगोळी, चित्रकला, वक्तृत्व अशा मंडळाच्या स्पर्धांची माहिती आणि विजेते.">
+<link rel="canonical" href="https://example.com/sports.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="खेळ व स्पर्धा | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="क्रिकेट, कबड्डी, रांगोळी, चित्रकला, वक्तृत्व अशा मंडळाच्या स्पर्धांची माहिती आणि विजेते.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / खेळ व स्पर्धा</nav>
+    <h1>खेळ व स्पर्धा</h1>
+    <p>लहान मुलांपासून ज्येष्ठांपर्यंत सर्वांसाठी उत्सवातील स्पर्धा.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-trophy"></i></div><h2>सर्व स्पर्धा</h2><p>तारीख, ठिकाण आणि सहभागाची माहिती.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" type="search" placeholder="स्पर्धा शोधा…" aria-label="स्पर्धा शोधा"></div>
+<div class="grid g-3" id="box"></div></div></section>
+
+<section class="section section--tint"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-medal"></i></div><h2>विजेते</h2><p>यंदाच्या स्पर्धांचे निकाल.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="panel"><div class="tblwrap"><table class="dt" id="winTbl"></table></div></div></div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,1)+'")';
+
+var all=DB.list('competitions');
+function render(list){
+ var b=document.getElementById('box');
+ b.innerHTML = list.length ? list.map(function(c,i){
+  return '<article class="card rv" data-delay="'+(i*60)+'">'+
+  '<div class="card__media"><img src="'+esc(c.image)+'" alt="'+esc(c.name)+'" loading="lazy"><span class="tag">'+DB.fmtDate(c.date)+'</span></div>'+
+  '<div class="card__body"><h3><i class="fa-solid '+esc(c.icon)+'" style="color:var(--orange);margin-right:8px"></i>'+esc(c.name)+'</h3>'+
+  '<p>'+esc(c.desc)+'</p>'+
+  '<div class="event__meta"><span><i class="fa-solid fa-location-dot"></i> '+esc(c.venue)+'</span>'+
+  '<span><i class="fa-solid fa-users"></i> '+esc(c.participants)+'</span></div></div></article>';
+ }).join('') : T.empty('स्पर्धा सापडली नाही','दुसऱ्या शब्दांनी शोधून पाहा.','fa-magnifying-glass');
+ refreshUI();
+}
+render(all);
+document.getElementById('q').addEventListener('input',function(e){
+ var q=e.target.value.trim().toLowerCase();
+ render(all.filter(function(c){return (c.name+' '+c.desc+' '+c.venue).toLowerCase().indexOf(q)>-1;}));
+});
+
+var w=DB.list('competition_winners');
+document.getElementById('winTbl').innerHTML = w.length ?
+ '<thead><tr><th>स्पर्धा</th><th>क्रमांक</th><th>विजेता</th><th>वर्ष</th></tr></thead><tbody>'+
+ w.map(function(x){return '<tr><td>'+esc(x.comp)+'</td><td><span class="tag">'+esc(x.rank)+'</span></td><td>'+esc(x.name)+'</td><td>'+esc(x.year)+'</td></tr>';}).join('')+
+ '</tbody>' : '<tbody><tr><td>निकाल अद्याप जाहीर झालेले नाहीत.</td></tr></tbody>';
+
+</script>
+</body>
+</html>

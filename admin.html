@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>प्रशासक पॅनेल | जय श्री राम मित्र मंडळ</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-body">
+
+<!-- ================= लॉगिन ================= -->
+<div class="login-wrap" id="loginView">
+  <div class="login-card">
+    <img src="assets/img/logo.png" alt="जय श्री राम मित्र मंडळ" width="80" height="80">
+    <h2 style="font-size:1.35rem;margin-bottom:4px">प्रशासक लॉगिन</h2>
+    <p class="note">॥ जय श्री राम मित्र मंडळ ॥ — संकेतस्थळ व्यवस्थापन</p>
+
+    <div class="alert alert-bad" id="loginErr">ईमेल किंवा पासवर्ड चुकीचा आहे. पुन्हा प्रयत्न करा.</div>
+
+    <form id="loginForm" novalidate>
+      <div class="field"><label for="le">ईमेल</label>
+        <input id="le" type="email" placeholder="admin@mandal.com" autocomplete="username"></div>
+      <div class="field"><label for="lp">पासवर्ड</label>
+        <input id="lp" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="btn btn-primary btn-block" type="submit"><i class="fa-solid fa-right-to-bracket"></i> लॉगिन करा</button>
+    </form>
+
+    <p class="note" style="margin-top:20px;background:#FFF1D6;padding:12px;border-radius:10px">
+      <b>नमुना लॉगिन</b><br>ईमेल: admin@mandal.com<br>पासवर्ड: mandal@123
+    </p>
+    <p style="margin-top:16px"><a href="index.html">&larr; वेबसाइटवर परत जा</a></p>
+  </div>
+</div>
+
+<!-- ================= डॅशबोर्ड ================= -->
+<div class="adm" id="adminView" hidden>
+  <aside class="aside" id="aside">
+    <div class="abrand">
+      <img src="assets/img/logo.png" alt="" width="40" height="40">
+      <b>जय श्री राम<br>मित्र मंडळ</b>
+    </div>
+    <nav id="anav">
+      <a href="#" data-v="dash" class="on"><i class="fa-solid fa-gauge"></i> डॅशबोर्ड</a>
+      <a href="#" data-v="festivals"><i class="fa-solid fa-om"></i> उत्सव</a>
+      <a href="#" data-v="events"><i class="fa-solid fa-calendar-days"></i> कार्यक्रम</a>
+      <a href="#" data-v="mankari"><i class="fa-solid fa-hands-praying"></i> आरतीचे मानकरी</a>
+      <a href="#" data-v="photos"><i class="fa-solid fa-images"></i> फोटो</a>
+      <a href="#" data-v="videos"><i class="fa-solid fa-video"></i> व्हिडिओ</a>
+      <a href="#" data-v="competitions"><i class="fa-solid fa-trophy"></i> स्पर्धा</a>
+      <a href="#" data-v="winners"><i class="fa-solid fa-medal"></i> विजेते</a>
+      <a href="#" data-v="team"><i class="fa-solid fa-people-group"></i> टीम</a>
+      <a href="#" data-v="social"><i class="fa-solid fa-hands-holding-heart"></i> सामाजिक उपक्रम</a>
+      <a href="#" data-v="messages"><i class="fa-solid fa-envelope"></i> संदेश</a>
+      <a href="#" data-v="settings"><i class="fa-solid fa-gear"></i> संपर्क सेटिंग्ज</a>
+      <a href="index.html" style="margin-top:14px"><i class="fa-solid fa-arrow-up-right-from-square"></i> वेबसाइट पाहा</a>
+      <a href="#" id="logout"><i class="fa-solid fa-right-from-bracket"></i> लॉगआउट</a>
+    </nav>
+  </aside>
+
+  <main class="amain">
+    <div class="abar"><button id="mburger" aria-label="मेनू"><i class="fa-solid fa-bars"></i></button>
+      <b style="font-family:Mukta,sans-serif">प्रशासक पॅनेल</b></div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<!-- मोडल -->
+<div class="modal" id="modal">
+  <div class="modal__box">
+    <div class="modal__h"><h3 id="mTitle">नोंद</h3><button type="button" id="mX" aria-label="बंद करा">&times;</button></div>
+    <div class="modal__b"><form id="mForm"></form></div>
+    <div class="modal__f">
+      <button class="btn btn-outline btn-sm" type="button" id="mCancel">रद्द करा</button>
+      <button class="btn btn-primary btn-sm" type="button" id="mSave">जतन करा</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/db.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

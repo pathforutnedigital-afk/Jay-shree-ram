@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>फोटो गॅलरी | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="मंडळाच्या गणेशोत्सव, नवरात्र, दहीहंडी, स्पर्धा आणि सामाजिक उपक्रमांचे फोटो.">
+<link rel="canonical" href="https://example.com/gallery.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="फोटो गॅलरी | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="मंडळाच्या गणेशोत्सव, नवरात्र, दहीहंडी, स्पर्धा आणि सामाजिक उपक्रमांचे फोटो.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / फोटो गॅलरी</nav>
+    <h1>आमच्या आठवणी</h1>
+    <p>उत्सव, स्पर्धा आणि उपक्रमांतील निवडक क्षण.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="filters" id="filters"></div>
+<div class="masonry" id="box"></div>
+</div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,2)+'")';
+
+var all=DB.list('photos'), cur='सर्व';
+var albums=['सर्व','गणेशोत्सव','नवरात्र','दहीहंडी','खेळ','सामाजिक उपक्रम','इतर'];
+document.getElementById('filters').innerHTML=albums.map(function(a){
+ return '<button class="chip'+(a===cur?' on':'')+'" data-a="'+a+'">'+a+'</button>';}).join('');
+function list(){return cur==='सर्व'?all:all.filter(function(p){return p.album===cur;});}
+function render(){
+ var l=list(), b=document.getElementById('box');
+ b.style.columns = l.length ? '' : '1';
+ if(!l.length){b.innerHTML=T.empty('या अल्बममध्ये फोटो नाहीत','दुसरा अल्बम निवडा किंवा प्रशासक पॅनेलमधून फोटो जोडा.','fa-image');return;}
+ b.innerHTML=l.map(function(p,i){
+  return '<figure data-i="'+i+'"><img src="'+esc(p.url)+'" alt="'+esc(p.title)+'" loading="lazy">'+
+  '<figcaption>'+esc(p.title)+' — '+esc(p.album)+'</figcaption></figure>';}).join('');
+}
+document.getElementById('filters').addEventListener('click',function(e){
+ var c=e.target.closest('.chip'); if(!c)return;
+ cur=c.dataset.a;
+ [].forEach.call(this.querySelectorAll('.chip'),function(x){x.classList.toggle('on',x===c);});
+ render();
+});
+document.getElementById('box').addEventListener('click',function(e){
+ var f=e.target.closest('figure'); if(f)openLightbox(list(),parseInt(f.dataset.i,10));
+});
+render();
+
+</script>
+</body>
+</html>

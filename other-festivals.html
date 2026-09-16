@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>इतर उत्सव | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="दिवाळी, होळी, राम नवमी, हनुमान जयंती, स्वातंत्र्य दिन आणि इतर उत्सवांची माहिती.">
+<link rel="canonical" href="https://example.com/other-festivals.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="इतर उत्सव | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="दिवाळी, होळी, राम नवमी, हनुमान जयंती, स्वातंत्र्य दिन आणि इतर उत्सवांची माहिती.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / इतर उत्सव</nav>
+    <h1>इतर उत्सव</h1>
+    <p>परंपरा, संस्कृती आणि आनंदाने साजरे होणारे विविध उत्सव.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="shead"><div class="kalash"><i class="fa-solid fa-calendar-star"></i></div><h2>वर्षभरातील उत्सव</h2><p>गणेशोत्सव, नवरात्र आणि दहीहंडीव्यतिरिक्त मंडळात साजरे होणारे सण.</p><div class="torana" aria-hidden="true"></div></div>
+<div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" type="search" placeholder="उत्सव शोधा…" aria-label="उत्सव शोधा"></div>
+<div class="grid g-3" id="box"></div></div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,3)+'")';
+
+var all=DB.list('festivals').filter(function(f){return !f.featured;});
+function render(list){
+ var b=document.getElementById('box');
+ b.innerHTML = list.length ? list.map(function(f,i){
+  return '<article class="card rv" data-delay="'+(i*70)+'">'+
+  '<div class="card__media"><img src="'+esc(f.image)+'" alt="'+esc(f.name)+'" loading="lazy"><span class="tag">'+esc(f.year)+'</span></div>'+
+  '<div class="card__body"><h3>'+esc(f.name)+'</h3><p>'+esc(f.desc)+'</p></div></article>';
+ }).join('') : T.empty('शोधाशी जुळणारा उत्सव सापडला नाही','दुसऱ्या शब्दांनी शोधून पाहा.','fa-magnifying-glass');
+ refreshUI();
+}
+render(all);
+document.getElementById('q').addEventListener('input',function(e){
+ var q=e.target.value.trim().toLowerCase();
+ render(all.filter(function(f){return (f.name+' '+f.desc).toLowerCase().indexOf(q)>-1;}));
+});
+
+</script>
+</body>
+</html>

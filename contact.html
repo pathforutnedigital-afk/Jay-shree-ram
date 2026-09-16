@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>संपर्क | जय श्री राम मित्र मंडळ</title>
+<meta name="description" content="जय श्री राम मित्र मंडळाचा पत्ता, मोबाईल नंबर, ईमेल आणि चौकशी फॉर्म.">
+<link rel="canonical" href="https://example.com/contact.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mr_IN">
+<meta property="og:title" content="संपर्क | जय श्री राम मित्र मंडळ">
+<meta property="og:description" content="जय श्री राम मित्र मंडळाचा पत्ता, मोबाईल नंबर, ईमेल आणि चौकशी फॉर्म.">
+<meta property="og:image" content="assets/img/logo.png">
+<meta name="theme-color" content="#F57C00">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<section class="pbanner">
+  <div class="pbanner__img" id="pbImg"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="index.html">मुखपृष्ठ</a> / संपर्क</nav>
+    <h1>आमच्याशी संपर्क साधा</h1>
+    <p>कार्यक्रम, सहभाग किंवा कोणत्याही सूचनेसाठी मंडळाशी संपर्क करा.</p>
+  </div>
+</section>
+
+<section class="section section--white"><div class="wrap">
+<div class="contact-grid">
+  <div class="rv">
+    <div class="shead left"><div class="kalash"><i class="fa-solid fa-location-dot"></i></div><h2>जय श्री राम मित्र मंडळ</h2><p>मंडळ कार्यालयाचा पत्ता व संपर्क.</p><div class="torana" aria-hidden="true"></div></div>
+    <div class="cinfo" id="cinfo"></div>
+    <div class="socials" style="justify-content:flex-start;margin-top:20px" id="csoc"></div>
+  </div>
+
+  <div class="rv" data-delay="120">
+    <div class="shead left"><div class="kalash"><i class="fa-solid fa-envelope"></i></div><h2>चौकशी करा</h2><p>फॉर्म भरा, आम्ही लवकरच संपर्क करू.</p><div class="torana" aria-hidden="true"></div></div>
+    <div class="alert alert-ok" id="okMsg">धन्यवाद! तुमचा संदेश मंडळापर्यंत पोहोचला आहे. आम्ही लवकरच संपर्क साधू.</div>
+    <form id="cform" novalidate>
+      <div class="field" id="f-name"><label for="name">नाव</label>
+        <input id="name" name="name" type="text" placeholder="तुमचे पूर्ण नाव" autocomplete="name">
+        <span class="err">कृपया तुमचे नाव लिहा (किमान २ अक्षरे).</span></div>
+      <div class="field" id="f-phone"><label for="phone">मोबाईल नंबर</label>
+        <input id="phone" name="phone" type="tel" placeholder="१० अंकी मोबाईल नंबर" autocomplete="tel" inputmode="numeric">
+        <span class="err">कृपया १० अंकी वैध मोबाईल नंबर लिहा.</span></div>
+      <div class="field" id="f-email"><label for="email">ईमेल</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+        <span class="err">कृपया वैध ईमेल पत्ता लिहा.</span></div>
+      <div class="field" id="f-msg"><label for="msg">संदेश</label>
+        <textarea id="msg" name="msg" placeholder="तुमचा संदेश येथे लिहा…"></textarea>
+        <span class="err">कृपया किमान १० अक्षरांचा संदेश लिहा.</span></div>
+      <button class="btn btn-primary btn-block" type="submit"><i class="fa-solid fa-paper-plane"></i> संदेश पाठवा</button>
+      <p class="note" style="margin-top:12px">तातडीच्या कामासाठी थेट फोन किंवा WhatsApp वर संपर्क साधा.</p>
+    </form>
+  </div>
+</div>
+
+<div class="map rv" style="margin-top:48px" id="mapBox"></div>
+</div></section>
+<footer id="site-footer"></footer>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+document.getElementById('pbImg').style.backgroundImage='url("'+DB.ph('',1600,700,2)+'")';
+
+var S=DB.settings();
+document.getElementById('cinfo').innerHTML=[
+ ['fa-location-dot','पत्ता',S.address],
+ ['fa-phone','मोबाईल',S.phone+(S.phone2?' / '+S.phone2:'')],
+ ['fa-envelope','ईमेल',S.email],
+ ['fa-clock','कार्यालय वेळ','सोमवार ते रविवार, सायंकाळी ६:०० ते रात्री ९:००']
+].map(function(r){
+ return '<div class="row"><span class="ico"><i class="fa-solid '+r[0]+'"></i></span>'+
+ '<span><b>'+r[1]+'</b><span>'+esc(r[2])+'</span></span></div>';}).join('');
+
+document.getElementById('csoc').innerHTML=
+ '<a href="https://wa.me/'+esc(S.whatsapp)+'" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>'+
+ '<a href="'+esc(S.instagram)+'" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>'+
+ '<a href="'+esc(S.facebook)+'" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>'+
+ '<a href="'+esc(S.youtube)+'" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>';
+
+document.getElementById('mapBox').innerHTML='<iframe src="'+esc(S.maps)+'" loading="lazy" title="मंडळाचे ठिकाण" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+
+/* फॉर्म तपासणी */
+var f=document.getElementById('cform');
+function setErr(id,bad){document.getElementById(id).classList.toggle('invalid',bad);return !bad;}
+function validate(){
+ var ok=true;
+ ok = setErr('f-name', document.getElementById('name').value.trim().length<2) && ok;
+ ok = setErr('f-phone', !/^[6-9]\d{9}$/.test(document.getElementById('phone').value.replace(/\s|-/g,''))) && ok;
+ var em=document.getElementById('email').value.trim();
+ ok = setErr('f-email', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) && ok;
+ ok = setErr('f-msg', document.getElementById('msg').value.trim().length<10) && ok;
+ return ok;
+}
+['name','phone','email','msg'].forEach(function(id){
+ document.getElementById(id).addEventListener('blur',validate);
+});
+f.addEventListener('submit',function(e){
+ e.preventDefault();
+ if(!validate()){
+  var bad=f.querySelector('.field.invalid input,.field.invalid textarea');
+  if(bad) bad.focus();
+  return;
+ }
+ DB.insert('messages',{
+  name:document.getElementById('name').value.trim(),
+  phone:document.getElementById('phone').value.trim(),
+  email:document.getElementById('email').value.trim(),
+  msg:document.getElementById('msg').value.trim(),
+  at:new Date().toISOString()
+ });
+ f.reset();
+ var ok=document.getElementById('okMsg');
+ ok.classList.add('show');
+ ok.scrollIntoView({behavior:'smooth',block:'center'});
+ setTimeout(function(){ok.classList.remove('show');},8000);
+});
+refreshUI();
+
+</script>
+</body>
+</html>
